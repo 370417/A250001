@@ -5,7 +5,7 @@ const ANIMATION_DURATION = 200;
 
 let animation = randAnimation(0, ANIMATION_DURATION);
 
-function animateCircles() {
+function animateCircles(): void {
     $path.setAttribute('d', render(animation));
     if (animation.frame < animation.duration) {
         animation.frame++;

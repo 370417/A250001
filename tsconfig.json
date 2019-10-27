@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "module": "System",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "sourceMap": true
+    }
+}

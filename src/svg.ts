@@ -64,6 +64,6 @@ function circleToSvg(circle: Circle): SVGPathCircle {
     ]
 }
 
-export function circleToD(circle: Circle): String {
+export function circleToD(circle: Circle): string {
     return formatCircle(circleToSvg(circle));
 }

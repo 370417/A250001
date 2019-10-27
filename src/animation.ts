@@ -4,25 +4,11 @@ import { circleToD } from './svg';
 /** This file handles easing and other animation calculations. */
 
 export interface CircleAnimation {
-    frame: number,
-    readonly startIndex: number,
-    readonly endIndex: number,
-    readonly duration: number,
-    readonly permutation: readonly[number, number, number, number],
-}
-
-export function render(animation: CircleAnimation): string {
-    return animation.permutation.map((shuffledIndex, index) => {
-        const startCircle = data[4 * animation.startIndex + index];
-        const endCircle = data[4 * animation.endIndex + shuffledIndex];
-        const easeFunction = index % 2 ? sinEaseCircle : secEaseCircle;
-        const circle = easeFunction(
-            startCircle,
-            endCircle,
-            // add 0.5 to avoid infinite circles
-            (animation.frame + 0.5) / animation.duration);
-        return circleToD(circle);
-    }).join(' ');
+    frame: number;
+    readonly startIndex: number;
+    readonly endIndex: number;
+    readonly duration: number;
+    readonly permutation: readonly[number, number, number, number];
 }
 
 /** Create a new random animation from a certain starting point */
@@ -93,6 +79,12 @@ function sinEaseCircle(from: Circle, to: Circle, time: number): Circle {
     };
 }
 
+function calcDistance(a: Circle, b: Circle): number {
+    const dx = a.cx - b.cx;
+    const dy = a.cy - b.cy;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
 function secEaseCircle(from: Circle, to: Circle, time: number): Circle {
     const distance = calcDistance(from, to);
     if (distance < 0.0002) {
@@ -108,8 +100,16 @@ function secEaseCircle(from: Circle, to: Circle, time: number): Circle {
     };
 }
 
-function calcDistance(a: Circle, b: Circle): number {
-    const dx = a.cx - b.cx;
-    const dy = a.cy - b.cy;
-    return Math.sqrt(dx * dx + dy * dy);
+export function render(animation: CircleAnimation): string {
+    return animation.permutation.map((shuffledIndex, index) => {
+        const startCircle = data[4 * animation.startIndex + index];
+        const endCircle = data[4 * animation.endIndex + shuffledIndex];
+        const easeFunction = index % 2 ? sinEaseCircle : secEaseCircle;
+        const circle = easeFunction(
+            startCircle,
+            endCircle,
+            // add 0.5 to avoid infinite circles
+            (animation.frame + 0.5) / animation.duration);
+        return circleToD(circle);
+    }).join(' ');
 }

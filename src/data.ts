@@ -474,9 +474,9 @@ const rawData: Circle[] = [
  * shortRow is true if the relevant row has 12 columns, and false if it has 13.
  */
 type dataPosition = {
-    row: number,
-    column: number,
-    shortRow: boolean,
+    row: number;
+    column: number;
+    shortRow: boolean;
 };
 
 /**
@@ -487,8 +487,8 @@ type dataPosition = {
 function calcDataPosition(groupIndex: number): dataPosition {
     // instead of breaking the index into alternating 12 and 13 column
     // rows right away, break it up into 25 column proto-rows first.
-    let protoRow = Math.floor(groupIndex / 25);
-    let protoColumn = groupIndex % 25;
+    const protoRow = Math.floor(groupIndex / 25);
+    const protoColumn = groupIndex % 25;
     // the first 12 elements of a proto-row form a short row
     if (protoColumn < 12) {
         return {
@@ -511,8 +511,8 @@ function calcDataPosition(groupIndex: number): dataPosition {
  * viewbox (0 0 400 400). This index indexes an individual circle, not a
  * group of four.
  */
-function normalize(circle: Circle, index: number) {
-    let position = calcDataPosition(Math.floor(index / 4));
+function normalize(circle: Circle, index: number): Circle {
+    const position = calcDataPosition(Math.floor(index / 4));
     const xOffset = 400 * position.column + (position.shortRow ? 200 : 0);
     const yOffset = 400 * position.row;
     return {
